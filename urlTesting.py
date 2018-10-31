@@ -1,6 +1,7 @@
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.chrome.options import Options  
+from selenium.webdriver.support import expected_conditions as EC
 
 import time
 
@@ -31,14 +32,27 @@ except:
 #filling the form
 try:
 	inputbox = driver.find_element_by_id("lst-ib")
-	result = inputbox.send_keys("some text")
+	inputbox.clear()  
+	inputbox.send_keys("some text")
+	print("keys passed to input box")
+	
 	btn = driver.find_element_by_name('btnK')
 	btn.click()
 	print("clicked on search button")
+	try:
+		element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.Class, "LC20lb")))
+	except:
+		print("don't know")
+	results = driver.find_elements_by_class_name("LC20lb")
+	for elem in results:
+		print(elem.text)
 	
 	
 except NoSuchElementException:
 	print ("Unable to find element")
+	
+finally:
+	driver.quit()
 	
 
 	
